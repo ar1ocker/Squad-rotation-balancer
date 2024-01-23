@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  rotation_prefer:
+    build: ../rotation_balancer
+    volumes:
+      - nicegui_data:/app/.nicegui
+  nginx:
+    image: nginx:stable-bullseye-perl
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./htpasswd:/htpasswd
+    depends_on:
+      - rotation_prefer
+
+volumes:
+  nicegui_data:
